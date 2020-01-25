@@ -1,6 +1,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source ${DIR}/.bash_colors
 
+echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
+
 
 ##### ALIASES #####
 
@@ -24,6 +26,20 @@ function my_screen {
 
 function get_instance_ip() {
 	gcloud compute instances describe $1 --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+}
+
+function is_installed() {
+    if ! dpkg -s $1 >/dev/null 2>&1; then
+        if [ -z $2 ]; then
+            echo $1 is not installed
+        fi
+        return 1; # error, stop exec
+    else
+        if [ -z $2 ]; then
+            echo $1 is installed
+        fi
+        return 0; # OK, continue exec
+    fi
 }
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -70,7 +86,9 @@ export ARDMK_DIR="/usr/share/arduino/"
 
 
 #### app specific section
-eval "$(register-python-argcomplete ngc)"
+__register_ngc=""
+is_installed python-argcomplete silent &&  eval 'export __register_ngc="\$(register-python-argcomplete ngc)"'
+eval $__register_ngc
 # export DOCKER_HOST=localhost:2375
 
 #. /opt/ros/kinetic/setup.bash
