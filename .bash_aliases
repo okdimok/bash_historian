@@ -3,8 +3,27 @@ source ${DIR}/.bash_colors
 
 echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
+##### To Override Locally Before Other Aliases #####
+# this is going to be the local file to control the local policies
+if [ -f ${DIR}/.bash_aliases_local_before ]; then
+    . ${DIR}/.bash_aliases_local_before
+fi
 
-##### ALIASES #####
+##### History #####
+# don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+PROMPT_COMMAND='history -a; history -n'
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=
+HISTFILESIZE=
+# HISTFILE=${DIR}/bash_history
+HISTFILE=${HOME}/.bash_history # keeping it for now to allow public repo
+
+##### Aliases #####
 
 alias tmux_main="tmux a -d -t main || tmux new -A -s main"
 
@@ -51,7 +70,7 @@ alias pycharm="nohup pycharm-professional . > /dev/null 2>&1 &"
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${Green}\]\u@\h\[${Color_Off}\]:\[${ICyan}\]\w\[${Color_Off}\]"
 PREV_PS="${PS1:0: -3}"
 source /etc/bash_completion.d/git-prompt
-export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${White}\]\$ "
+export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ "
 
 PAGER=vless
 GIT_PAGER=vless
@@ -63,11 +82,12 @@ export NO_AT_BRIDGE=1 # to prevent gvim warnings and other stuff
 
 ##### GLOBAL PATHs #####
 
-export PATH="/home/dmitry/my_scripts:$PATH"
-export PATH="/home/dmitry/apps:$PATH"
+export PATH="${HOME}/my_scripts:$PATH"
+export PATH="${HOME}/apps:$PATH"
 
-# export PATH="/home/warden/miniconda3/bin:$PATH"
-# export PATH="/home/warden/my_scripts:$PATH"
+# export PATH="${HOME}/miniconda3/bin:$PATH"
+# export PATH="${HOME}/apps/miniconda3/bin:$PATH"
+# export PATH="${HOME}/my_scripts:$PATH"
 # export PATH="/usr/local/cuda-8.0/bin:$PATH"
 
 # export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
@@ -85,7 +105,7 @@ alias espmake="make -f ~/apps/makeEspArduino/makeEspArduino.mk"
 export ARDMK_DIR="/usr/share/arduino/"
 
 
-#### app specific section
+##### App Specific Section #####
 __register_ngc=""
 is_installed python-argcomplete silent &&  eval 'export __register_ngc="\$(register-python-argcomplete ngc)"'
 eval $__register_ngc
@@ -93,10 +113,10 @@ eval $__register_ngc
 
 #. /opt/ros/kinetic/setup.bash
 
-#### to override locally
+##### To Override Locally #####
 # this is going to be the local file to control the local policies
-if [ -f ~/.bash_aliases_local ]; then
-    . ~/.bash_aliases_local
+if [ -f ${DIR}/.bash_aliases_local_after ]; then
+    . ${DIR}/.bash_aliases_local_after
 fi
 
 
