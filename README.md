@@ -9,7 +9,6 @@ You should clone public repo and run an install script that
 * backs up your bashrc file if it exists
 * creates 
 * comments out lines with hist, HIST, ignoreboth,ignorespace,ignoredups in your .bashrc and writes, that it is commented out by Bash Historian
-* places a repo and a branch to 
 * clones a private repo to ${HOME}/bash_history_repo, specified branch, 
 * copies history to it.bash_aliases_local_before, pushes to specified branch
 * sets up automatic pushes in crontab if requested

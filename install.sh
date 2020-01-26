@@ -36,12 +36,36 @@ source ${DIR}/install_configuration
 
 [[ -z $BASH_HISTORY_TEMPLATE_EDITED ]] && echo "You have not edited BASH_HISTORY_TEMPLATE_EDITED var. Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template." && exit 1 || echo "Loaded proper config from ${DIR}/install_configuration";
 
-	
+if [[ ! -z $BASH_HISTORY_SSH_KEY ]]; then
+	echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
+fi
+ 
+[[ -f ${DIR}/ssh_key ]] && ssh-add ${DIR}/ssh_key
 
+if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
+    __cmd="git clone";
+    [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
+    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${HOME}/bash_history"
+    eval "${__cmd}" && BRANCH_FOUND=1
+    if [[ -z $BRANCH_FOUND ]]; then
+        git clone ${BASH_HISTORY_REPOSITORY} ${HOME}/bash_history
+        cd ${HOME}/bash_history
+        git checkout -b "${BASH_HISTORY_BRANCH}"
+        git push -u origin "${BASH_HISTORY_BRANCH}"
+    fi
+	cd ${HOME}/bash_history
+    cp ${HOME}/.bash_history ${HOME}/bash_history/bash_history
+    git add bash_history
+    git commit -am `date +%Y-%m-%d_%H.%M.%S`
+    git push	
+fi
+
+ 
 
 sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/' ${HOME}/.bashrc
 sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/' ${HOME}/.bashrc
 
-echo "" > ${DIR}/.bash_aliases_local_before
-
-cat ${DIR}/.bash_aliases_local_template >> ${DIR}/.bash_aliases_local_before
+echo "" > ${DIR}/.bash_aliases_local_after
+echo "##### History #####" >> ${DIR}/.bash_aliases_local_after
+echo "HISTFILE=${HOME}/bash_history/bash_history\n" >> ${DIR}/.bash_aliases_local_after
+cat ${DIR}/.bash_aliases_local_template >> ${DIR}/.bash_aliases_local_after

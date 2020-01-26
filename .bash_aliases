@@ -66,6 +66,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias rsync_ai='rsync -av --info=progress2'
 alias pycharm="nohup pycharm-professional . > /dev/null 2>&1 &"
 
+function date_files() {
+	date +%Y-%m-%d_%H.%M.%S
+}
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${Green}\]\u@\h\[${Color_Off}\]:\[${ICyan}\]\w\[${Color_Off}\]"
 PREV_PS="${PS1:0: -3}"
