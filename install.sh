@@ -62,7 +62,7 @@ if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
 	echo "##### History #####" >> ${DIR}/bash_aliases_local_after
 	echo "HISTFILE=${HOME}/bash_history/bash_history" >> ${DIR}/bash_aliases_local_after
 	echo "" >> ${DIR}/bash_aliases_local_after
-	cat ${DIR}/.bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
+	cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
 fi
 
  
