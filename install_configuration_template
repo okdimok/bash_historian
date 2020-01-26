@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+BASH_HISTORY_TEMPLATE_EDITED= # just set it to something
+BASH_HISTORY_REPOSITORY=
+BASH_HISTORY_BRANCH=`[[ -s boo ]] && cat /etc/hostname || echo "no-hostname"`
+BASH_HISTORY_SSH_KEY=

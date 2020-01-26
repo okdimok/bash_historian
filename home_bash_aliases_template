@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+BASH_HISTORIAN_ALIASES=${HOME}/bash_historian/.bash_aliases
+if [ -f $BASH_HISTORIAN_ALIASES ]; then
+    . $BASH_HISTORIAN_ALIASES
+else
+	echo "The ~/.bash_aliases points to bash_historian, but it cannot be found"
+fi
