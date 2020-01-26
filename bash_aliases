@@ -1,5 +1,5 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source ${DIR}/.bash_colors
+source ${DIR}/bash_colors
 
 echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
