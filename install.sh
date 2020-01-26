@@ -57,7 +57,12 @@ if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
     cp ${HOME}/.bash_history ${HOME}/bash_history/bash_history
     git add bash_history
     git commit -am `date +%Y-%m-%d_%H.%M.%S`
-    git push	
+    git push
+    echo -n "" > ${DIR}/bash_aliases_local_after
+	echo "##### History #####" >> ${DIR}/bash_aliases_local_after
+	echo "HISTFILE=${HOME}/bash_history/bash_history" >> ${DIR}/bash_aliases_local_after
+	echo "" >> ${DIR}/bash_aliases_local_after
+	cat ${DIR}/.bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
 fi
 
  
@@ -65,7 +70,4 @@ fi
 sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/' ${HOME}/.bashrc
 sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/' ${HOME}/.bashrc
 
-echo "" > ${DIR}/.bash_aliases_local_after
-echo "##### History #####" >> ${DIR}/.bash_aliases_local_after
-echo "HISTFILE=${HOME}/bash_history/bash_history\n" >> ${DIR}/.bash_aliases_local_after
-cat ${DIR}/.bash_aliases_local_template >> ${DIR}/.bash_aliases_local_after
+

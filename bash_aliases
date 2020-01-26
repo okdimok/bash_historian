@@ -5,8 +5,8 @@ echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
 ##### To Override Locally Before Other Aliases #####
 # this is going to be the local file to control the local policies
-if [ -f ${DIR}/.bash_aliases_local_before ]; then
-    . ${DIR}/.bash_aliases_local_before
+if [ -f ${DIR}/bash_aliases_local_before ]; then
+    . ${DIR}/bash_aliases_local_before
 fi
 
 ##### History #####
@@ -118,8 +118,8 @@ eval $__register_ngc
 
 ##### To Override Locally #####
 # this is going to be the local file to control the local policies
-if [ -f ${DIR}/.bash_aliases_local_after ]; then
-    . ${DIR}/.bash_aliases_local_after
+if [ -f ${DIR}/bash_aliases_local_after ]; then
+    . ${DIR}/bash_aliases_local_after
 fi
 
 
