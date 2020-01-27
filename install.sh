@@ -32,6 +32,7 @@ function __check_github_ssh_access() {
 function __generate_git_ssh_key() {
    echo generating a ssh-key for you
    ssh-keygen -t ed25519 -f ${DIR}/ssh_key
+   eval "$(ssh-agent -s)"
    ssh-add ${DIR}/ssh_key
    HTTPS_REPO="${BASH_HISTORY_REPOSITORY/git@github.com:/https:\/\/github.com\/}"
    HTTPS_REPO="${HTTPS_REPO%.git}"
@@ -50,7 +51,7 @@ function __install_git_ssh_key() {
     echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
   fi
    
-  [[ -f ${DIR}/ssh_key ]] && ssh-add ${DIR}/ssh_key
+  [[ -f ${DIR}/ssh_key ]] && eval "$(ssh-agent -s)" && ssh-add ${DIR}/ssh_key
     
   if __check_github_ssh_access; then
     return 0;
