@@ -110,7 +110,7 @@ export ARDMK_DIR="/usr/share/arduino/"
 
 ##### App Specific Section #####
 __register_ngc=""
-is_installed python-argcomplete silent &&  eval 'export __register_ngc="\$(register-python-argcomplete ngc)"'
+is_installed python-argcomplete silent &&  eval 'export __register_ngc="eval \"\$(register-python-argcomplete ngc)\""'
 eval $__register_ngc
 # export DOCKER_HOST=localhost:2375
 
