@@ -1,0 +1,5 @@
+[alias]
+	co = checkout
+	ci = commit
+	s = status
+	unstage = 'reset HEAD --'

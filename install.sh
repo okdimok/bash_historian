@@ -36,6 +36,13 @@ source ${DIR}/install_configuration
 
 [[ -z $BASH_HISTORY_TEMPLATE_EDITED ]] && echo "You have not edited BASH_HISTORY_TEMPLATE_EDITED var. Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template." && exit 1 || echo "Loaded proper config from ${DIR}/install_configuration";
 
+if [[ -n $INSTALL_GITCONFIG ]]; then
+  [[ -n "${GIT_USER_NAME}" || -n "${GIT_USER_EMAIL}" ]]  && echo "[user]" >  ${HOME}/.gitconfig
+  [[ -n "${GIT_USER_NAME}" ]] && echo -e "\tname = '${GIT_USER_NAME}'" >>  ${HOME}/.gitconfig
+  [[ -n "${GIT_USER_EMAIL}" ]] && echo -e "\temail = '${GIT_USER_EMAIL}'" >>  ${HOME}/.gitconfig
+  cat ${DIR}/gitconfig_template >> ${HOME}/.gitconfig
+fi
+
 if [[ ! -z $BASH_HISTORY_SSH_KEY ]]; then
 	echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
 fi
