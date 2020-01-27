@@ -13,6 +13,6 @@ remote_instructions=`cat ${DIR}/aux/remote_install_instructions`
 ssh $host "git clone https://github.com/okdimok/bash_historian;"
 [[ -n $config ]] && scp ${config} $host:~/bash_historian
 ssh -t $host "cd ~/bash_historian; \\
-./install.sh; \\
+source ./install.sh; \\
 echo \"${remote_instructions}\"; \\
 /bin/bash -i"

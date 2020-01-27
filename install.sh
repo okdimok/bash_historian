@@ -57,7 +57,7 @@ function __install_git_ssh_key() {
   if [[ -n $BASH_HISTORY_SSH_KEY ]]; then
      echo "==WARNING== You have specified a key, but it is not accepted in your repo"
   else
-    while [[ ! __generate_git_ssh_key ]]; do
+    while ! __generate_git_ssh_key; do
       echo -n "";
     done;
   fi
