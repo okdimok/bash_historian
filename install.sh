@@ -15,6 +15,50 @@ function __bak_file () {
 	done;
 	return 1; # all 1000 copies exist
 }
+
+function __install_gitconfig() {
+  if [[ -n $INSTALL_GITCONFIG ]]; then
+    [[ -n "${GIT_USER_NAME}" || -n "${GIT_USER_EMAIL}" ]]  && echo "[user]" >  ${HOME}/.gitconfig
+    [[ -n "${GIT_USER_NAME}" ]] && echo -e "\tname = '${GIT_USER_NAME}'" >>  ${HOME}/.gitconfig
+    [[ -n "${GIT_USER_EMAIL}" ]] && echo -e "\temail = '${GIT_USER_EMAIL}'" >>  ${HOME}/.gitconfig
+    cat ${DIR}/gitconfig_template >> ${HOME}/.gitconfig
+  fi
+}
+
+function __check_github_ssh_access() {
+    [[ `bash -c "ssh -o BatchMode=yes -q git@github.com" 2>&1 | grep ^Hi | wc -l` -gt 0 ]]
+}
+
+function __install_git_ssh_key() {
+  if [[ -n $BASH_HISTORY_SSH_KEY ]]; then
+    echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
+  fi
+   
+  [[ -f ${DIR}/ssh_key ]] && ssh-add ${DIR}/ssh_key
+    
+  if __check_github_ssh_access; then
+    return 0;
+  else
+    if [[ -n $BASH_HISTORY_SSH_KEY ]]; then
+       echo "==WARNING== You have specified a key, but it is not accepted in your repo"
+    else
+       echo generating a ssh-key for you
+       ssh-keygen -t ed25519 -f ${DIR}/ssh_key
+       HTTPS_REPO="https://${BASH_HISTORY_REPOSITORY#*@}"
+       echo now you should open 
+       echo ${BASH_HISTORY_REPOSITORY}/settings/keys
+       echo and add there a public key
+       echo ====================
+       cat ${DIR}/ssh_key.pub
+       echo ====================
+    fi
+  fi
+  
+
+  
+}
+
+##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
 __bak_file ${HOME}/.bash_history
@@ -38,20 +82,12 @@ source ${DIR}/install_configuration
 
 [[ -z $BASH_HISTORY_TEMPLATE_EDITED ]] && echo "You have not edited BASH_HISTORY_TEMPLATE_EDITED var. Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template." && exit 1 || echo "Loaded proper config from ${DIR}/install_configuration";
 
-if [[ -n $INSTALL_GITCONFIG ]]; then
-  [[ -n "${GIT_USER_NAME}" || -n "${GIT_USER_EMAIL}" ]]  && echo "[user]" >  ${HOME}/.gitconfig
-  [[ -n "${GIT_USER_NAME}" ]] && echo -e "\tname = '${GIT_USER_NAME}'" >>  ${HOME}/.gitconfig
-  [[ -n "${GIT_USER_EMAIL}" ]] && echo -e "\temail = '${GIT_USER_EMAIL}'" >>  ${HOME}/.gitconfig
-  cat ${DIR}/gitconfig_template >> ${HOME}/.gitconfig
-fi
+__install_gitconfig
 
-if [[ ! -z $BASH_HISTORY_SSH_KEY ]]; then
-	echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
-fi
- 
-[[ -f ${DIR}/ssh_key ]] && ssh-add ${DIR}/ssh_key
+__install_git_ssh_key
 
 if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
+    
     BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
     __cmd="git clone";
     [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"

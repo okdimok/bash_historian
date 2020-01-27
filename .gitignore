@@ -5,3 +5,4 @@ bash_aliases_local_before
 bash_aliases_local_after
 install_configuration
 ssh_key
+ssh_key.pub
