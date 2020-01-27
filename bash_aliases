@@ -5,8 +5,9 @@ source ${DIR}/bash_colors
 
 echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
-PS_USER_COLOR=${BGreen}
-PS_HOST_COLOR=${BGreen}
+PS_USER_COLOR=${Green}
+PS_HOST_COLOR=${Green}
+PS_PATH_COLOR=${BCyan}
 
 ##### To Override Locally Before Other Aliases #####
 # this is going to be the local file to control the local policies
@@ -75,7 +76,7 @@ function date_files() {
 	date +%Y-%m-%d_%H.%M.%S
 }
 ##### Environments
-PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${ICyan}\]\w\[${Color_Off}\]"
+PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
 # PREV_PS="${PS1:0: -3}"
 source /etc/bash_completion.d/git-prompt
 export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ "
