@@ -32,9 +32,9 @@ function __check_github_ssh_access() {
 function __generate_git_ssh_key() {
    echo generating a ssh-key for you
    ssh-keygen -t ed25519 -f ${DIR}/ssh_key
-   HTTPS_REPO="https://${BASH_HISTORY_REPOSITORY#*@}"
+   HTTPS_REPO="${BASH_HISTORY_REPOSITORY/git@github.com:/https:\/\/github.com}"
    echo now you should open 
-   echo ${BASH_HISTORY_REPOSITORY}/settings/keys
+   echo ${HTTPS_REPO}/settings/keys
    echo and add there a public key
    echo ====================
    cat ${DIR}/ssh_key.pub
