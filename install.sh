@@ -32,7 +32,8 @@ function __check_github_ssh_access() {
 function __generate_git_ssh_key() {
    echo generating a ssh-key for you
    ssh-keygen -t ed25519 -f ${DIR}/ssh_key
-   HTTPS_REPO="${BASH_HISTORY_REPOSITORY/git@github.com:/https:\/\/github.com}"
+   ssh-add ${DIR}/ssh_key
+   HTTPS_REPO="${BASH_HISTORY_REPOSITORY/git@github.com:/https:\/\/github.com\/}"
    HTTPS_REPO="${HTTPS_REPO%.git}"
    echo now you should open 
    echo ${HTTPS_REPO}/settings/keys
