@@ -40,7 +40,7 @@ function __generate_git_ssh_key() {
    cat ${DIR}/ssh_key.pub
    echo ====================
    read -n 1 -p "Press Enter when ready": __no_need
-   return __check_github_ssh_access
+   __check_github_ssh_access
 }
 
 function __install_git_ssh_key() {
