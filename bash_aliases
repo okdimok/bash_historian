@@ -71,7 +71,7 @@ function date_files() {
 }
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${Green}\]\u@\h\[${Color_Off}\]:\[${ICyan}\]\w\[${Color_Off}\]"
-PREV_PS="${PS1:0: -3}"
+# PREV_PS="${PS1:0: -3}"
 source /etc/bash_completion.d/git-prompt
 export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ "
 
