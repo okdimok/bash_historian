@@ -29,6 +29,20 @@ function __check_github_ssh_access() {
     [[ `bash -c "ssh -o BatchMode=yes -q git@github.com" 2>&1 | grep ^Hi | wc -l` -gt 0 ]]
 }
 
+function __generate_git_ssh_key() {
+   echo generating a ssh-key for you
+   ssh-keygen -t ed25519 -f ${DIR}/ssh_key
+   HTTPS_REPO="https://${BASH_HISTORY_REPOSITORY#*@}"
+   echo now you should open 
+   echo ${BASH_HISTORY_REPOSITORY}/settings/keys
+   echo and add there a public key
+   echo ====================
+   cat ${DIR}/ssh_key.pub
+   echo ====================
+   read -n 1 -p "Press Enter when ready": __no_need
+   return __check_github_ssh_access
+}
+
 function __install_git_ssh_key() {
   if [[ -n $BASH_HISTORY_SSH_KEY ]]; then
     echo $BASH_HISTORY_SSH_KEY > ${DIR}/ssh_key
@@ -43,15 +57,9 @@ function __install_git_ssh_key() {
   if [[ -n $BASH_HISTORY_SSH_KEY ]]; then
      echo "==WARNING== You have specified a key, but it is not accepted in your repo"
   else
-     echo generating a ssh-key for you
-     ssh-keygen -t ed25519 -f ${DIR}/ssh_key
-     HTTPS_REPO="https://${BASH_HISTORY_REPOSITORY#*@}"
-     echo now you should open 
-     echo ${BASH_HISTORY_REPOSITORY}/settings/keys
-     echo and add there a public key
-     echo ====================
-     cat ${DIR}/ssh_key.pub
-     echo ====================
+    while [[ ! __generate_git_ssh_key ]]; do
+      echo -n "";
+    done;
   fi
   
 
