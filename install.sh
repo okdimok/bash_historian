@@ -18,11 +18,13 @@ function __bak_file () {
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
 __bak_file ${HOME}/.bash_history
-# Currently, only default history location is backed up. No way to learn, where the history is stored in an interactive session. Even starting an interactive session inside and sourcing bashrc doesn't help
 # this outputs a HISTFILE to a file
-# doesn't work yet
-#bash --init-file <(echo ". ${HOME}/.bashrc; set | grep HISTFILE | grep -v SIZE | cut -d = -f 2  > /tmp/histfile")
-#HF=`cat /tmp/histfile`
+__tmp=$(mktemp)
+bash -ic "source ${HOME}/.bashrc && set | grep \"^HISTFILE=\" > ${__tmp}"
+HF=`cat "${__tmp}"`
+HF="${HF#*=}"
+__bak_file "${HF}"
+[[ -z $HF ]] && HF=${HOME}/.bash_history
 
 cp ${DIR}/home_bash_aliases_template ${HOME}/.bash_aliases
 
@@ -50,24 +52,25 @@ fi
 [[ -f ${DIR}/ssh_key ]] && ssh-add ${DIR}/ssh_key
 
 if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
+    BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
     __cmd="git clone";
     [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
-    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${HOME}/.bash_history_repo"
+    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
     eval "${__cmd}" && BRANCH_FOUND=1
     if [[ -z $BRANCH_FOUND ]]; then
-        git clone ${BASH_HISTORY_REPOSITORY} ${HOME}/bash_history
-        cd ${HOME}/bash_history
+        git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
+        cd ${BASH_HISTORY_LOCAL_REPO}
         git checkout -b "${BASH_HISTORY_BRANCH}"
         git push -u origin "${BASH_HISTORY_BRANCH}"
     fi
-	cd ${HOME}/bash_history
-    cp ${HOME}/.bash_history ${HOME}/bash_history/bash_history
+	cd ${BASH_HISTORY_LOCAL_REPO}
+    cp ${HF} ${BASH_HISTORY_LOCAL_REPO}/bash_history
     git add bash_history
     git commit -am `date +%Y-%m-%d_%H.%M.%S`
     git push
     echo -n "" > ${DIR}/bash_aliases_local_after
 	echo "##### History #####" >> ${DIR}/bash_aliases_local_after
-	echo "HISTFILE=${HOME}/.bash_history_repo/bash_history" >> ${DIR}/bash_aliases_local_after
+	echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
 	echo "" >> ${DIR}/bash_aliases_local_after
 	cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
 fi
