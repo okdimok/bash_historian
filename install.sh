@@ -52,7 +52,7 @@ fi
 if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
     __cmd="git clone";
     [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
-    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${HOME}/bash_history"
+    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${HOME}/.bash_history_repo"
     eval "${__cmd}" && BRANCH_FOUND=1
     if [[ -z $BRANCH_FOUND ]]; then
         git clone ${BASH_HISTORY_REPOSITORY} ${HOME}/bash_history
@@ -67,7 +67,7 @@ if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
     git push
     echo -n "" > ${DIR}/bash_aliases_local_after
 	echo "##### History #####" >> ${DIR}/bash_aliases_local_after
-	echo "HISTFILE=${HOME}/bash_history/bash_history" >> ${DIR}/bash_aliases_local_after
+	echo "HISTFILE=${HOME}/.bash_history_repo/bash_history" >> ${DIR}/bash_aliases_local_after
 	echo "" >> ${DIR}/bash_aliases_local_after
 	cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
 fi
