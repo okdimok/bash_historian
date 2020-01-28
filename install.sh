@@ -55,6 +55,9 @@ function __install_git_ssh_key() {
     
   if __check_github_ssh_access; then
     return 0;
+  else
+    ssh-keyscan -H github.com >> ~/.ssh/known_hosts;
+    __check_github_ssh_access && return 0;
   fi
   
   if [[ -n $BASH_HISTORY_SSH_KEY ]]; then

@@ -78,8 +78,8 @@ function date_files() {
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
 # PREV_PS="${PS1:0: -3}"
-source /etc/bash_completion.d/git-prompt
-export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ "
+[[ -f /etc/bash_completion.d/git-prompt ]] && source /etc/bash_completion.d/git-prompt
+command -v __git_ps1 >/dev/null 2>&1 && export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ " ||  export PS1="${PREV_PS}""\[${Color_Off}\]\$ "
 
 PAGER=vless
 GIT_PAGER=vless
