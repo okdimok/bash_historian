@@ -67,6 +67,18 @@ function is_installed() {
     fi
 }
 
+function ngc_last_job_id () {
+	last_job=`ngc batch list --format_type csv --status RUNNING | grep -v Id | tail -n 1 | cut -d, -f1`
+	[[ -z $last_job ]] && >&2 echo "last job has no Id yet" && return 1;
+	echo $last_job
+}
+
+function ngc_running_info () {
+	ngc batch list --format_type csv --status RUNNING | grep -v Id | cut -d, -f1 | while read job_id; do
+		ngc batch info $job_id;
+	done;
+}
+
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 alias rsync_ai='rsync -av --info=progress2'
