@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function fetch_all_branches() {
+function __fetch_all_branches() {
     git branch -r | grep -v '\->' | while read remote; do
         git branch --track "${remote#origin/}" "$remote";
     done
@@ -8,12 +8,12 @@ function fetch_all_branches() {
     git pull --all
 }
 
-function get_history_from_branch() {
+function __get_history_from_branch() {
     branch=$1;
     git show $branch:bash_history
 }
 
-function get_history_from_all_branches() {
+function __get_history_from_all_branches() {
     __tmp=`mktemp`
     git branch -r | grep -v '\->' | while read remote; do
         branch="${remote#origin/}"
@@ -23,21 +23,27 @@ function get_history_from_all_branches() {
     rm ${__tmp}
 }
 
-function update_current_branch() {
+function __update_current_branch() {
     git add bash_history
     git commit -m $(date +%Y-%m-%d_%H.%M.%S)
     git push
 }
 
-function update_repo_commands_from_master() {
-    read -n 1 -p "Make sure you are not executing it on a working copy. To continue press any key"
-    fetch_all_branches
-    git branch -r | grep -v '\->' | grep -v 'origin/master' | while read remote; do
-        branch="${remote#origin/}"
-        git checkout $branch
-        git show master:repo_commands.sh > repo_commands.sh
-        git add repo_commands.sh
-        git commit -m "repo commands update "$(date +%Y-%m-%d_%H.%M.%S)
-        git push
-    done
+function __wrap_to_dir() {
+  WRAPPED=$1
+  TARGET=$2
+  D=${PWD}
+  cd $2
+  $1
+  cd ${D}
 }
+
+
+funcs=( fetch_all_branches get_history_from_branch get_history_from_all_branches update_current_branch )
+for f in "${funcs[@]}"; do
+  eval "\
+  function ${f} {\
+    __wrap_to_dir __${f} \"${HOME}/.bash_history_repo/\"; \
+  }";
+done;
+

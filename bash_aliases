@@ -67,6 +67,10 @@ function is_installed() {
     fi
 }
 
+function __register_bash_historian_commands () {
+  source "${HOME}/bash_historian/aux/bash_history_repo_commands.sh"
+}
+
 function ngc_last_job_id () {
 	last_job=`ngc batch list --format_type csv --status RUNNING | grep -v Id | tail -n 1 | cut -d, -f1`
 	[[ -z $last_job ]] && >&2 echo "last job has no Id yet" && return 1;
