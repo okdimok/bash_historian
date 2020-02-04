@@ -17,6 +17,7 @@ function __get_history_from_all_branches() {
     __tmp=`mktemp`
     git branch -r | grep -v '\->' | while read remote; do
         branch="${remote#origin/}"
+        # this requires awk from gawk package and not mawk. One can just install it using apt
         git show $branch:bash_history | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
     done
     less ${__tmp}
