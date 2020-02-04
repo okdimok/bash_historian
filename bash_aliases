@@ -26,6 +26,7 @@ PROMPT_COMMAND='history -a; history -n'
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=
 HISTFILESIZE=
+HISTTIMEFORMAT="%F %T "
 # HISTFILE=${DIR}/bash_history
 HISTFILE=${HOME}/.bash_history # keeping it for now to allow public repo
 
