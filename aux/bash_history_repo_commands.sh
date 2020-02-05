@@ -20,7 +20,7 @@ function __bh_all() {
         # this requires awk from gawk package and not mawk. One can just install it using apt
         git show $branch:bash_history | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
     done
-    less ${__tmp}
+    cat ${__tmp}
     rm ${__tmp}
 }
 
