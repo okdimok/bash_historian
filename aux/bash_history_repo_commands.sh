@@ -15,10 +15,11 @@ function __bh_from_branch() {
 
 function __bh_all() {
     __tmp=`mktemp`
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
     git branch -r | grep -v '\->' | while read remote; do
         branch="${remote#origin/}"
         # this requires awk from gawk package and not mawk. One can just install it using apt
-        git show $branch:bash_history | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
+	cat <( [[ $branch -eq $current_branch ]] && cat bash_history || git show $branch:bash_history ) | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
     done
     cat ${__tmp}
     rm ${__tmp}
