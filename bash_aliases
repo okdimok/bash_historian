@@ -32,13 +32,17 @@ HISTFILE=${HOME}/.bash_history # keeping it for now to allow public repo
 
 ##### Aliases #####
 
-alias tmux_main="tmux a -d -t main || tmux new -A -s main"
+function tmux_main () {
+    tmux a -d -t main || tmux new -A -s main
+}
+export -f tmux_main
 
 ssh_tmux () {
     host=$1
     shift
     ssh $host -t "tmux a -d -t main || tmux new -A -s main" $@
 }
+export -f ssh_tmux
 
 function gvimm() { gvim "$@" 2>/dev/null ;}
 function title {
