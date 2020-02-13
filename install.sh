@@ -74,6 +74,34 @@ function __install_git_ssh_key() {
   
 }
 
+
+function __install_bash_history_repository() {
+	if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
+			
+			BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
+			__cmd="git clone";
+			[[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
+			__cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
+			eval "${__cmd}" && BRANCH_FOUND=1
+			if [[ -z $BRANCH_FOUND ]]; then
+					git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
+					cd ${BASH_HISTORY_LOCAL_REPO}
+					git checkout -b "${BASH_HISTORY_BRANCH}"
+					git push -u origin "${BASH_HISTORY_BRANCH}"
+			fi
+		cd ${BASH_HISTORY_LOCAL_REPO}
+			cp ${HF} ${BASH_HISTORY_LOCAL_REPO}/bash_history
+			git add bash_history
+			git commit -am `date +%Y-%m-%d_%H.%M.%S`
+			git push
+			echo -n "" > ${DIR}/bash_aliases_local_after
+		echo "##### History #####" >> ${DIR}/bash_aliases_local_after
+		echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
+		echo "" >> ${DIR}/bash_aliases_local_after
+		cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
+	fi
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -103,31 +131,7 @@ __install_gitconfig
 
 __install_git_ssh_key
 
-if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
-    
-    BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
-    __cmd="git clone";
-    [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
-    __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
-    eval "${__cmd}" && BRANCH_FOUND=1
-    if [[ -z $BRANCH_FOUND ]]; then
-        git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
-        cd ${BASH_HISTORY_LOCAL_REPO}
-        git checkout -b "${BASH_HISTORY_BRANCH}"
-        git push -u origin "${BASH_HISTORY_BRANCH}"
-    fi
-	cd ${BASH_HISTORY_LOCAL_REPO}
-    cp ${HF} ${BASH_HISTORY_LOCAL_REPO}/bash_history
-    git add bash_history
-    git commit -am `date +%Y-%m-%d_%H.%M.%S`
-    git push
-    echo -n "" > ${DIR}/bash_aliases_local_after
-	echo "##### History #####" >> ${DIR}/bash_aliases_local_after
-	echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
-	echo "" >> ${DIR}/bash_aliases_local_after
-	cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
-fi
-
+__install_bash_history_repository # installs only if the folder doesn't exist
  
 
 sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
