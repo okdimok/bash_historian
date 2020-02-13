@@ -38,6 +38,8 @@ function __generate_git_ssh_key() {
    HTTPS_REPO="${HTTPS_REPO%.git}"
    echo now you should open 
    echo ${HTTPS_REPO}/settings/keys
+   echo OR
+   echo https://github.com/settings/keys
    echo and add there a public key
    echo ====================
    cat ${DIR}/ssh_key.pub
@@ -76,6 +78,7 @@ function __install_git_ssh_key() {
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
 __bak_file ${HOME}/.bash_history
+__bak_file ${HOME}/.gitconfig
 # this outputs a HISTFILE to a file
 __tmp=$(mktemp)
 bash -ic "source ${HOME}/.bashrc && set | grep \"^HISTFILE=\" > ${__tmp}"
@@ -127,7 +130,7 @@ fi
 
  
 
-sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/' ${HOME}/.bashrc
-sed -i '/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/' ${HOME}/.bashrc
+sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
+sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
 
 
