@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+function __current_branch() {
+   git rev-parse --abbrev-ref HEAD
+}
+
 function __bh_track_all() {
     git branch -r | grep -v '\->' | while read remote; do
-        git branch --track "${remote#origin/}" "$remote";
+      [[ "${remote#origin/}" == $(__current_branch) ]] \
+      && git branch --set-upstream-to "${remote#origin/}" "$remote" \
+      || git branch -f --track "${remote#origin/}" "$remote";
     done
 }
 
@@ -20,11 +26,10 @@ function __bh_from_branch() {
 
 function __bh_all() {
     __tmp=`mktemp`
-    current_branch=$(git rev-parse --abbrev-ref HEAD)
     git branch -r | grep -v '\->' | while read remote; do
         branch="${remote#origin/}"
         # this requires awk from gawk package and not mawk. One can just install it using apt
-	cat <( [[ $branch == $current_branch ]] && cat bash_history || git show $branch:bash_history ) | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
+	cat <( [[ $branch == `__current_branch` ]] && cat bash_history || git show $branch:bash_history ) | awk '{ sub(/^#[0-9]*/, strftime("# %Y-%m-%d %H:%M:%S", substr($1,2))); print; }' | sed -e "s=^=${branch} =" >> $__tmp
     done
     cat ${__tmp}
     rm ${__tmp}
