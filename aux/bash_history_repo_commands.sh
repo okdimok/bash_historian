@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-function __bh_fetch_all() {
+function __bh_track_all() {
     git branch -r | grep -v '\->' | while read remote; do
         git branch --track "${remote#origin/}" "$remote";
     done
+}
+
+function __bh_fetch_all() {
+    __bh_track_all
     git fetch --all
+    __bh_track_all
     git pull --all
 }
 
