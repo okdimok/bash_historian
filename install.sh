@@ -2,18 +2,18 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 function __bak_file () {
-	input_file=$1
-	output_file="${input_file}.bash_historian.bak" 
-	[[ -f $input_file ]] || return 0
-	[[ ! -f $output_file ]] && cp ${input_file} ${output_file} && return 0;
-	for i in {0..1000}; do
-		output_file_i="${output_file}.${i}"
-		if [[ ! -f $output_file_i ]]; then
-			cp ${input_file} ${output_file_i}
-			return 0;
-		fi
-	done;
-	return 1; # all 1000 copies exist
+  input_file=$1
+  output_file="${input_file}.bash_historian.bak" 
+  [[ -f $input_file ]] || return 0
+  [[ ! -f $output_file ]] && cp ${input_file} ${output_file} && return 0;
+  for i in {0..1000}; do
+    output_file_i="${output_file}.${i}"
+    if [[ ! -f $output_file_i ]]; then
+      cp ${input_file} ${output_file_i}
+      return 0;
+    fi
+  done;
+  return 1; # all 1000 copies exist
 }
 
 function __install_gitconfig() {
@@ -76,30 +76,43 @@ function __install_git_ssh_key() {
 
 
 function __install_bash_history_repository() {
-	if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
-			
-			BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
-			__cmd="git clone";
-			[[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
-			__cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
-			eval "${__cmd}" && BRANCH_FOUND=1
-			if [[ -z $BRANCH_FOUND ]]; then
-					git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
-					cd ${BASH_HISTORY_LOCAL_REPO}
-					git checkout -b "${BASH_HISTORY_BRANCH}"
-					git push -u origin "${BASH_HISTORY_BRANCH}"
-			fi
-		cd ${BASH_HISTORY_LOCAL_REPO}
-			cp ${HF} ${BASH_HISTORY_LOCAL_REPO}/bash_history
-			git add bash_history
-			git commit -am `date +%Y-%m-%d_%H.%M.%S`
-			git push
-			echo -n "" > ${DIR}/bash_aliases_local_after
-		echo "##### History #####" >> ${DIR}/bash_aliases_local_after
-		echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
-		echo "" >> ${DIR}/bash_aliases_local_after
-		cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after	
-	fi
+  if [[ ! -z $BASH_HISTORY_REPOSITORY ]]; then
+      
+      BASH_HISTORY_LOCAL_REPO="${HOME}/.bash_history_repo"
+      __cmd="git clone";
+      [[ ! -z $BASH_HISTORY_BRANCH ]] && __cmd="${__cmd} --branch ${BASH_HISTORY_BRANCH}"
+      __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
+      eval "${__cmd}" && BRANCH_FOUND=1
+      if [[ -z $BRANCH_FOUND ]]; then
+          git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
+          cd ${BASH_HISTORY_LOCAL_REPO}
+          git checkout -b "${BASH_HISTORY_BRANCH}"
+          git push -u origin "${BASH_HISTORY_BRANCH}"
+      fi
+    cd ${BASH_HISTORY_LOCAL_REPO}
+      cp ${HF} ${BASH_HISTORY_LOCAL_REPO}/bash_history
+      git add bash_history
+      git commit -am `date +%Y-%m-%d_%H.%M.%S`
+      git push
+      echo -n "" > ${DIR}/bash_aliases_local_after
+    echo "##### History #####" >> ${DIR}/bash_aliases_local_after
+    echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
+    echo "" >> ${DIR}/bash_aliases_local_after
+    cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after 
+  fi
+}
+
+function __update_bashrc () {
+  sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
+  sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
+}
+
+function __install_tmux_conf () {
+  cp ${DIR}/tmux.conf ${HOME}/.tmux.conf
+}
+
+function __install_bash_aliases() {
+  cp ${DIR}/home_bash_aliases_template ${HOME}/.bash_aliases
 }
 
 ##### Actual Operations
@@ -115,26 +128,23 @@ HF="${HF#*=}"
 __bak_file "${HF}"
 [[ -z $HF ]] && HF=${HOME}/.bash_history
 
-cp ${DIR}/home_bash_aliases_template ${HOME}/.bash_aliases
-
 if [[ ! -f ${DIR}/install_configuration ]]; then
-	cp ${DIR}/install_configuration_template ${DIR}/install_configuration
-	echo "Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template."
-	exit 0;
+  cp ${DIR}/install_configuration_template ${DIR}/install_configuration
+  echo "Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template."
+  exit 0;
 fi;
 
 source ${DIR}/install_configuration
 
 [[ -z $BASH_HISTORY_TEMPLATE_EDITED ]] && echo "You have not edited BASH_HISTORY_TEMPLATE_EDITED var. Please edit ${DIR}/install_configuration to set the history repository. It has been created from a template." && exit 1 || echo "Loaded proper config from ${DIR}/install_configuration";
 
-__install_gitconfig
-
-__install_git_ssh_key
-
-__install_bash_history_repository # installs only if the folder doesn't exist
- 
-
-sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
-sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
-
+if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
+  __install_bash_aliases
+  __install_gitconfig
+  __install_git_ssh_key
+  __install_bash_history_repository # installs only if the folder doesn't exist
+  __update_bashrc
+else
+  echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
+fi;
 
