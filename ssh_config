@@ -1,0 +1,3 @@
+Host github.com
+User git
+IdentityFile ${HOME}/bash_historian/ssh_key

@@ -68,6 +68,7 @@ function __install_git_ssh_key() {
     while ! __generate_git_ssh_key; do
       echo -n "";
     done;
+  cat ${DIR}/ssh_config >> ${HOME}/.ssh/config
   fi
   
 
@@ -99,6 +100,9 @@ function __install_bash_history_repository() {
     echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
     echo "" >> ${DIR}/bash_aliases_local_after
     cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after 
+    source ${DIR}/aux/bash_history_repo_commands.sh
+    bh_fetch_all
+    bh_push
   fi
 }
 
@@ -144,6 +148,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_git_ssh_key
   __install_bash_history_repository # installs only if the folder doesn't exist
   __update_bashrc
+  __install_tmux_conf
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;
