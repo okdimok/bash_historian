@@ -94,7 +94,10 @@ function ngc_running_info () {
 function ngc_wait_for_job_and_notify () {
     for i in {1..1500}; do # 1500 times 5 sec ~approx 2 hours
         if ngc_last_job_id; then
-            nst "Your NGC job started" "$(ngc_running_info)";
+            __ngc_info="$(ngc_running_info)"
+            nst "Your NGC job started" "${__ngc_info}";
+            echo "Your NGC job started"
+            echo "${__ngc_info}";
         else
             sleep 5;
         fi;
