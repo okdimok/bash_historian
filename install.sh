@@ -119,6 +119,20 @@ function __install_bash_aliases() {
   cp ${DIR}/home_bash_aliases_template ${HOME}/.bash_aliases
 }
 
+function __install_notify_telegram() {
+  if [[ -z $TELEGRAM_INSTALLATION_KEYS ]]; then
+    echo "skipping notify-send-telegram install";
+    return 0;
+  fi;
+  mkdir -p ${HOME}/apps
+  pip3 install --user requests
+  git clone https://github.com/MikeWent/notify-send-telegram.git ${HOME}/apps/notify-send-telegram
+  eval "${TELEGRAM_INSTALLATION_KEYS}"
+  echo "You might want to run:"
+  echo "sudo ln -s ${HOME}/apps/notify-send-telegram/notify-send-telegram.py /usr/local/bin/nst"
+  echo ""
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -149,6 +163,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_bash_history_repository # installs only if the folder doesn't exist
   __update_bashrc
   __install_tmux_conf
+  __install_notify_telegram
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;

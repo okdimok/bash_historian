@@ -18,6 +18,10 @@ Parameters it needs:
 * which SSH key to use to push, or how to generate one
 * branch name for this machine
 
+`AVOID_COMPLETE_BH_INSTALL` — set this variable in the install.sh script env to avoid complete installation.
+such as
+`AVOID_COMPLETE_BH_INSTALL=1 source ${HOME}/bash_historian/install.sh`
+
 
 
 
