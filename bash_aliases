@@ -98,10 +98,12 @@ function ngc_wait_for_job_and_notify () {
             nst "Your NGC job started" "${__ngc_info}";
             echo "Your NGC job started"
             echo "${__ngc_info}";
+            return 0;
         else
             sleep 5;
         fi;
     done;
+    return 1;
 }
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
