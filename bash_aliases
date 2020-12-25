@@ -160,6 +160,7 @@ eval $__register_ngc
 # export DOCKER_HOST=localhost:2375
 
 #. /opt/ros/kinetic/setup.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 ##### To Override Locally #####
 # this is going to be the local file to control the local policies
