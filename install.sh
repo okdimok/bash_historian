@@ -133,6 +133,15 @@ function __install_notify_telegram() {
   echo ""
 }
 
+function __install_fzf() {
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+}
+
+function __update_fzf() {
+  cd ~/.fzf && git pull && ./install
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -164,6 +173,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __update_bashrc
   __install_tmux_conf
   __install_notify_telegram
+  __install_fzf
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;
