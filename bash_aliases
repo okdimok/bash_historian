@@ -127,6 +127,11 @@ LESS=-Ri
 
 export NO_AT_BRIDGE=1 # to prevent gvim warnings and other stuff
 
+export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
+ssh-add -l 2>/dev/null >/dev/null
+if [ $? -ge 2 ]; then
+  ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+fi
 
 ##### GLOBAL PATHs #####
 
