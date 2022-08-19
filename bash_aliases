@@ -106,7 +106,11 @@ function ngc_wait_for_job_and_notify () {
     return 1;
 }
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+function last_file_matching () {
+    echo $(ls -t ${@:2} | head -n 1)
+}
+
+alias basic_alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 alias rsync_ai='rsync -av --info=progress2'
 alias pycharm="nohup pycharm-professional . > /dev/null 2>&1 &"
@@ -114,6 +118,16 @@ alias pycharm="nohup pycharm-professional . > /dev/null 2>&1 &"
 function date_files() {
 	date +%Y-%m-%d_%H.%M.%S
 }
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+alias alert_telegram='nst "$([ $? = 0 ] && echo Completed || echo ERROR) $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')" '
+
+
+
+
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
 # PREV_PS="${PS1:0: -3}"
