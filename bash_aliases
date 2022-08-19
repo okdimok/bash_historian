@@ -127,10 +127,13 @@ LESS=-Ri
 
 export NO_AT_BRIDGE=1 # to prevent gvim warnings and other stuff
 
-export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
-ssh-add -l 2>/dev/null >/dev/null
-if [ $? -ge 2 ]; then
-  ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+if [[ ! -S "${SSH_AUTH_SOCK}" ]]; then
+    # echo "warn: no forward agent detected ('${SSH_AUTH_SOCK}' is not a socket)";
+    export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
+    ssh-add -l 2>/dev/null >/dev/null
+    if [ $? -ge 2 ]; then
+        ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+    fi
 fi
 
 ##### GLOBAL PATHs #####
