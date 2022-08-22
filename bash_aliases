@@ -110,6 +110,20 @@ function last_file_matching () {
     echo $(ls -t ${@:2} | head -n 1)
 }
 
+function slurm_wait_n_jons_left_and_notify(){
+    for i in {1..10000}; do # 1500 times 5 sec ~approx 2 hours
+        if [[ $1 = $(( $(squeue --me | wc -l) - 1 )) ]]; then
+            nst "Only $1 SLURM jobs left" "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
+            echo  "Only $1 SLURM jobs left";
+            echo "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
+            return 0;
+        else
+            sleep 5;
+        fi;
+    done;
+    return 1;
+}
+
 alias basic_alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 alias rsync_ai='rsync -av --info=progress2'
