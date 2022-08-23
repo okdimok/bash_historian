@@ -127,6 +127,8 @@ function slurm_wait_n_jobs_left_and_notify(){
     return 1;
 }
 
+alias tmux_ssh_agent_fw_fix='eval $(tmux show-env -s)'
+
 alias basic_alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 alias rsync_ai='rsync -av --info=progress2'
