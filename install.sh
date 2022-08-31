@@ -107,6 +107,9 @@ function __install_bash_history_repository() {
 }
 
 function __update_bashrc () {
+  echo """if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+  fi""" >> ${HOME}/.bashrc
   sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
   sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
 }
@@ -168,7 +171,8 @@ source ${DIR}/install_configuration
 if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_bash_aliases
   __install_gitconfig
-  __install_git_ssh_key
+  echo "Skipping git ssh key install, the key is supposed to be forwarded"
+  # __install_git_ssh_key
   __install_bash_history_repository # installs only if the folder doesn't exist
   __update_bashrc
   __install_tmux_conf
