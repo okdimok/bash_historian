@@ -138,6 +138,7 @@ function date_files() {
 	date +%Y-%m-%d_%H.%M.%S
 }
 
+alias ls='ls --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
