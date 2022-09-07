@@ -107,7 +107,7 @@ function ngc_wait_for_job_and_notify () {
 }
 
 function last_file_matching () {
-    echo $(ls -t ${@:2} | head -n 1)
+    echo $(ls -t ${@:1} | head -n 1)
 }
 
 function slurm_wait_n_jobs_left_and_notify(){
