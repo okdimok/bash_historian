@@ -95,7 +95,7 @@ function ngc_wait_for_job_and_notify () {
     for i in {1..1500}; do # 1500 times 5 sec ~approx 2 hours
         if ngc_last_job_id; then
             __ngc_info="$(ngc_running_info)"
-            nst "Your NGC job started" "${__ngc_info}";
+            nst "▶ Your NGC job started" "${__ngc_info}";
             echo "Your NGC job started"
             echo "${__ngc_info}";
             return 0;
@@ -111,12 +111,12 @@ function last_file_matching () {
 }
 
 function slurm_wait_n_jobs_left_and_notify(){
-    nst "Waiting for $1 SLURM job(s) left" "$(squeue --me)";
+    nst "▶ Waiting for $1 SLURM job(s) left" "$(squeue --me)";
     echo "Waiting for $1 SLURM job(s) left";
     echo "$(squeue --me)";
     for i in {1..10000}; do # 1500 times 5 sec ~approx 2 hours
         if [[ $1 = $(( $(squeue --me | wc -l) - 1 )) ]]; then
-            nst "Only $1 SLURM jobs left" "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
+            nst "🟥 Only $1 SLURM jobs left" "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
             echo  "Only $1 SLURM jobs left";
             echo "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
             return 0;
@@ -143,7 +143,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias alert_telegram='nst "$([ $? = 0 ] && echo Completed || echo ERROR) $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')" '
+alias alert_telegram='nst "$([ $? = 0 ] && echo "✅ Completed ✅" || echo "❌ ERROR ❌") $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')" '
 alias bell='echo -e "\07"'
 
 
