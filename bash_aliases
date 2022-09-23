@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source ${DIR}/bash_colors
 
-[[ $- == *i* ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
+[[ $- == *i* && -z "$NO_BH_BANNER" ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
 PS_USER_COLOR=${Green}
 PS_HOST_COLOR=${Green}
