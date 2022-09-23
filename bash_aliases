@@ -3,8 +3,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source ${DIR}/bash_colors
 
-[[ $- == *i* && -z "$NO_BH_BANNER" ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
-
 PS_USER_COLOR=${Green}
 PS_HOST_COLOR=${Green}
 PS_PATH_COLOR=${BCyan}
@@ -14,6 +12,8 @@ PS_PATH_COLOR=${BCyan}
 if [ -f ${DIR}/bash_aliases_local_before ]; then
     . ${DIR}/bash_aliases_local_before
 fi
+
+[[ $- == *i* && -z "$NO_BH_BANNER" ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
 ##### History #####
 # don't put duplicate lines or lines starting with space in the history.
@@ -151,6 +151,7 @@ alias bell='echo -e "\07"'
 
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
+PREV_PS="${BIPurple}BH${Color_Off} ${PREV_PS}"
 # PREV_PS="${PS1:0: -3}"
 [[ -f ${DIR}/git-prompt.sh ]] && source ${DIR}/git-prompt.sh
 command -v __git_ps1 >/dev/null 2>&1 && export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ " ||  export PS1="${PREV_PS}""\[${Color_Off}\]\$ "
