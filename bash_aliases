@@ -151,7 +151,7 @@ alias bell='echo -e "\07"'
 
 ##### Environments
 PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
-PREV_PS="${BIPurple}BH${Color_Off} ${PREV_PS}"
+PREV_PS="\[${BIPurple}\]BH \[${Color_Off}\]${PREV_PS}"
 # PREV_PS="${PS1:0: -3}"
 [[ -f ${DIR}/git-prompt.sh ]] && source ${DIR}/git-prompt.sh
 command -v __git_ps1 >/dev/null 2>&1 && export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ " ||  export PS1="${PREV_PS}""\[${Color_Off}\]\$ "
