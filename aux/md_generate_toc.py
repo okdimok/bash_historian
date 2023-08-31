@@ -19,7 +19,7 @@ if __name__ == "__main__":
             just_title = re.sub(r"^#+", "", l).strip()
             title_hash = just_title.lower().replace(" ", "-")
             h_level = len(re.search(r"^(#+)", l).group(0))
-            print("  "*(h_level - 1) + f"[{just_title}](#{title_hash})")
+            print("  "*(h_level - 1) + f"- [{just_title}](#{title_hash})")
 
 
 

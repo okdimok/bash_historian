@@ -177,6 +177,7 @@ fi
 
 export PATH="${HOME}/my_scripts:$PATH"
 export PATH="${HOME}/apps:$PATH"
+export PATH="${HOME}/bash_historian/aux:$PATH"
 
 # export PATH="${HOME}/miniconda3/bin:$PATH"
 # export PATH="${HOME}/apps/miniconda3/bin:$PATH"

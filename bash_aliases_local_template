@@ -1,6 +1,7 @@
 ##### Aliases #####
 
 ##### Environments
+# export NO_BH_BANNER=true
 
 ##### GLOBAL PATHs #####
 
