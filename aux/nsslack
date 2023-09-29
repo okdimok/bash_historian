@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# check out this tutorial
+# https://api.slack.com/messaging/webhooks
+# https://app.slack.com/block-kit-builder/T04SYRAP3#
+# https://api.slack.com/reference/surfaces/formatting#linking-urls
+title="$1"
+body="$2"
+txt="*${title}*\n\n$body"
+data=$(cat <<-EOF
+{
+	"blocks": [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "$title",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "$body"
+			}
+		}
+	]
+}
+EOF
+)
+
+# echo "$data"
+curl -X POST -H 'Content-type: application/json' --data "${data}" "${SLACK_HOOK_ENDPOINT}"

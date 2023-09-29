@@ -100,6 +100,7 @@ function __install_bash_history_repository() {
     echo "HISTFILE=${BASH_HISTORY_LOCAL_REPO}/bash_history" >> ${DIR}/bash_aliases_local_after
     echo "" >> ${DIR}/bash_aliases_local_after
     cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after 
+    cat ${DIR}/bash_aliases_local_before >> ${DIR}/bash_aliases_local_before
     source ${DIR}/aux/bash_history_repo_commands.sh
     bh_fetch_all
     bh_push
@@ -134,6 +135,13 @@ function __install_notify_telegram() {
   echo "You might want to run:"
   echo "sudo ln -s ${HOME}/apps/notify-send-telegram/notify-send-telegram.py /usr/local/bin/nst"
   echo ""
+}
+
+function __install_notify_slack() {
+  if [[ ! -f ${DIR}/bash_aliases_local_after ]]; then
+        cat ${DIR}/bash_aliases_local_template >> ${DIR}/bash_aliases_local_after 
+  fi;
+  echo "export SLACK_HOOK_ENDPOINT=${SLACK_HOOK_ENDPOINT_CONFIG}" >> ${DIR}/bash_aliases_local_after
 }
 
 function __install_fzf() {
@@ -178,6 +186,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_tmux_conf
   __install_notify_telegram
   __install_fzf
+  __install_notify_slack
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;

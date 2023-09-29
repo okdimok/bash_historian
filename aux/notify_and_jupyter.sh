@@ -8,11 +8,11 @@ for ip_addr in $(hostname -I)
 do
     uri="http://${ip_addr}:${JUPYTER_PORT}/?token=${JUPYTER_TOKEN}";
     echo $uri;
-    msg="${msg}<a href='${uri}'>Jupyter @ ${ip_addr}</a> ";
+    msg="${msg}<${uri}|Jupyter @ ${ip_addr}> ";
 done
 hostname 
 echo -e "\07" # bell
-nst --raw "▶ Your new interactive Jupyter has just started on $(hostname)" "${msg}" 
+nsslack "▶ Your new interactive Jupyter has just started on \`$(hostname)\`" "${msg}" 
 jupyter lab --ip=0.0.0.0 --port="${JUPYTER_PORT}" \
 --allow-root --no-browser \
 --NotebookApp.token="${JUPYTER_TOKEN}" \

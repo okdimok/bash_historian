@@ -95,7 +95,7 @@ function ngc_wait_for_job_and_notify () {
     for i in {1..1500}; do # 1500 times 5 sec ~approx 2 hours
         if ngc_last_job_id; then
             __ngc_info="$(ngc_running_info)"
-            nst "▶ $(hostname) Your NGC job started" "${__ngc_info}";
+            nsslack "▶ $(hostname) Your NGC job started" "${__ngc_info}";
             echo "Your NGC job started"
             echo "${__ngc_info}";
             return 0;
@@ -111,12 +111,12 @@ function last_file_matching () {
 }
 
 function slurm_wait_n_jobs_left_and_notify(){
-    nst --raw "" "▶ <code>$(hostname)</code> <b>Waiting for $1 SLURM job(s) left</b>\n<pre>$(squeue --me)</pre>";
+    nsslack "" "▶ \`$(hostname)\` *Waiting for $1 SLURM job(s) left*\n\`\`\`$(squeue --me)\`\`\`";
     echo "Waiting for $1 SLURM job(s) left";
     echo "$(squeue --me)";
     for i in {1..10000}; do # 1500 times 5 sec ~approx 2 hours
         if [[ $1 = $(( $(squeue --me | wc -l) - 1 )) ]]; then
-            nst --raw "" "🟥 <code>$(hostname)</code>  <b>Only $1 SLURM jobs left</b>\n<pre>$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)</pre>";
+            nsslack "" "🟥 \`$(hostname)\`  *Only $1 SLURM jobs left*\n\`\`\`$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)\`\`\`";
             echo  "Only $1 SLURM jobs left";
             echo "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
             return 0;
