@@ -6,6 +6,10 @@
 title="$1"
 body="$2"
 txt="*${title}*\n\n$body"
+title_section=$(cat <<-EOF
+
+EOF
+)
 data=$(cat <<-EOF
 {
 	"blocks": [
@@ -13,7 +17,7 @@ data=$(cat <<-EOF
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": "$title",
+				"text": "$title ",
 				"emoji": true
 			}
 		},
@@ -21,7 +25,7 @@ data=$(cat <<-EOF
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "$body"
+				"text": "$body "
 			}
 		}
 	]
