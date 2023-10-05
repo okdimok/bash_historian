@@ -144,6 +144,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 alias alert_telegram='nst "$([ $? = 0 ] && echo "✅ Completed ✅" || echo "❌ ERROR ❌") $(hostname) $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')" '
+alias alert_slack='nsslack "$([ $? = 0 ] && echo "✅ Completed ✅" || echo "❌ ERROR ❌") $(hostname)" "\`$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')\`" '
 alias bell='echo -e "\07"'
 
 
