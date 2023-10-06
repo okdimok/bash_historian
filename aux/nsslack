@@ -37,5 +37,5 @@ data=$(cat <<-EOF
 EOF
 )
 
-echo "$data"
+# echo "$data"
 curl -X POST -H 'Content-type: application/json' --data "${data}" "${SLACK_HOOK_ENDPOINT}"
