@@ -3,9 +3,13 @@
 # https://api.slack.com/messaging/webhooks
 # https://app.slack.com/block-kit-builder/T04SYRAP3#
 # https://api.slack.com/reference/surfaces/formatting#linking-urls
-title="$1"
-body="$2"
+title="${1: }"
+body="${2: }"
 txt="*${title}*\n\n$body"
+title="${title//\\/\\\\}"
+title="${title//\"/\\\"}"
+body="${body//\\/\\\\}"
+body="${body//\"/\\\"}"
 title_section=$(cat <<-EOF
 
 EOF
@@ -17,7 +21,7 @@ data=$(cat <<-EOF
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": "$title ",
+				"text": "$title",
 				"emoji": true
 			}
 		},
@@ -25,7 +29,7 @@ data=$(cat <<-EOF
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "$body "
+				"text": "$body"
 			}
 		}
 	]
@@ -33,5 +37,5 @@ data=$(cat <<-EOF
 EOF
 )
 
-# echo "$data"
+echo "$data"
 curl -X POST -H 'Content-type: application/json' --data "${data}" "${SLACK_HOOK_ENDPOINT}"
