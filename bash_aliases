@@ -111,7 +111,7 @@ function last_file_matching () {
 }
 
 function slurm_wait_n_jobs_left_and_notify(){
-    nsslack "" "▶ \`$(hostname)\` *Waiting for $1 SLURM job(s) left*\n\`\`\`$(squeue --me)\`\`\`";
+    nsslack "" "▶ \`$(hostname)\` *Waiting for $1 SLURM job(s) left*\\n\`\`\`$(squeue --me)\`\`\`";
     echo "Waiting for $1 SLURM job(s) left";
     echo "$(squeue --me)";
     for i in {1..10000}; do # 1500 times 5 sec ~approx 2 hours

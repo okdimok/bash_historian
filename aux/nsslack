@@ -3,12 +3,12 @@
 # https://api.slack.com/messaging/webhooks
 # https://app.slack.com/block-kit-builder/T04SYRAP3#
 # https://api.slack.com/reference/surfaces/formatting#linking-urls
-title="${1: }"
-body="${2: }"
+title="${1:- }"
+body="${2:- }"
 txt="*${title}*\n\n$body"
-title="${title//\\/\\\\}"
+title="${title//\\[^n]/\\\\}"
 title="${title//\"/\\\"}"
-body="${body//\\/\\\\}"
+body="${body//\\[^n]/\\\\}"
 body="${body//\"/\\\"}"
 title_section=$(cat <<-EOF
 
