@@ -114,11 +114,15 @@ function slurm_wait_n_jobs_left_and_notify(){
     nsslack "" "▶ \`$(hostname)\` *Waiting for $1 SLURM job(s) left*\\n\`\`\`$(squeue --me)\`\`\`";
     echo "Waiting for $1 SLURM job(s) left";
     echo "$(squeue --me)";
-    for i in {1..10000}; do # 1500 times 5 sec ~approx 2 hours
+    for i in {1..$(( 60 / 5 * 60 * 8 ))}; do # every 5 sec 8 hours
         if [[ $1 = $(( $(squeue --me | wc -l) - 1 )) ]]; then
-            nsslack "" "🟥 \`$(hostname)\`  *Only $1 SLURM jobs left*\n\`\`\`$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)\`\`\`";
+            table="$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)"
+            table="${table//COMPLETED/COMPLET✅}"
+            table="${table//FAILED/FAIL❌}"
+            table="${table//CANCELLED/CANCELL🟧}"
+            nsslack "" "🟥 \`$(hostname)\`  *Only $1 SLURM jobs left*\n\`\`\`${table}\`\`\`";
             echo  "Only $1 SLURM jobs left";
-            echo "$(sacct --format="JobID,JobName%30,Partition,Account,AllocCPUS,State,ExitCode" | tail -n 15)";
+            echo "${table}";
             return 0;
         else
             sleep 5;
