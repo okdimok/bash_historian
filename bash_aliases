@@ -107,7 +107,9 @@ function ngc_wait_for_job_and_notify () {
 }
 
 function last_file_matching () {
-    echo $(ls -t ${@:1} | head -n 1)
+    last_file_or_dir="$(ls -t ${@:1} | head -n 1)"
+    # remove : from the end of the file, if it exists
+    echo "${last_file_or_dir%:}"
 }
 
 function slurm_wait_n_jobs_left_and_notify(){
