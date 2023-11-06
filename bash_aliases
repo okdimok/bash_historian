@@ -133,6 +133,20 @@ function slurm_wait_n_jobs_left_and_notify(){
     return 1;
 }
 
+function ssh_bell() {
+    target_host=$1
+    title "ssh_bell ${target_host}"
+    for i in $(seq 1 $(( 60 / 20 * 60 * 24 )) ); do # every 10 sec 24 hours
+        ssh -o ConnectTimeout=10 "${target_host}" echo connected 2>/dev/null \
+        && bell \
+        && alert_slack \
+        && return 0;
+        sleep 10s;
+    done;
+    return 1;
+}
+
+
 alias tmux_ssh_agent_fw_fix='eval $(tmux show-env -s)'
 
 alias basic_alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
