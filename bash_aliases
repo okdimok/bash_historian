@@ -226,6 +226,7 @@ __register_ngc=""
 is_installed python-argcomplete silent &&  eval 'export __register_ngc="eval \"\$(register-python-argcomplete ngc)\""'
 eval $__register_ngc
 # export DOCKER_HOST=localhost:2375
+[ -f ~/.ngc/config ] && export NGC_API_KEY=$(grep key ~/.ngc/config | sed "s/.*\s=\s//")
 
 #. /opt/ros/kinetic/setup.bash
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
