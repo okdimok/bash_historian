@@ -155,7 +155,11 @@ _edit_wo_executing() {
     READLINE_POINT="${#READLINE_LINE}"
     \rm -f "$tmpf"  # -f for those who have alias rm='rm -i'
 }
-bind -x '"\C-x\C-e":_edit_wo_executing'
+
+if [[ $- = *i* ]]
+then
+    bind -x '"\C-x\C-e":_edit_wo_executing'
+fi
 
 alias tmux_ssh_agent_fw_fix='eval $(tmux show-env -s)'
 
