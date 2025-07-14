@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-BASH_HISTORIAN_ALIASES=${HOME}/bash_historian/bash_aliases
+# This file is prepended in the __install_bash_aliases function
 if [ -f $BASH_HISTORIAN_ALIASES ]; then
     . $BASH_HISTORIAN_ALIASES
 else

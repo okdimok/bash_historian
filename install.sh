@@ -115,12 +115,32 @@ function __update_bashrc () {
   sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
 }
 
+function __move_bash_aliases_to_bottom() {
+  local bashrc="${HOME}/.bashrc"
+  local tmpfile
+  tmpfile=$(mktemp)
+
+  # Remove all lines that source ~/.bash_aliases
+  grep -vE '^\s*\. ~/.bash_aliases\s*$|^\s*source ~/.bash_aliases\s*$' "$bashrc" > "$tmpfile"
+
+  # Add the source line at the end
+  echo "" >> "$tmpfile"
+  echo 'if [ -f ~/.bash_aliases ]; then' >> "$tmpfile"
+  echo '  . ~/.bash_aliases' >> "$tmpfile"
+  echo 'fi' >> "$tmpfile"
+
+  # Replace the original .bashrc
+  mv "$tmpfile" "$bashrc"
+}
+
 function __install_tmux_conf () {
   cp ${DIR}/tmux.conf ${HOME}/.tmux.conf
 }
 
 function __install_bash_aliases() {
-  cp ${DIR}/home_bash_aliases_template ${HOME}/.bash_aliases
+  echo "#!/usr/bin/env bash" > ${HOME}/.bash_aliases
+  echo "BASH_HISTORIAN_ALIASES=\"${DIR}/bash_aliases\"" >> ${HOME}/.bash_aliases
+  cat ${DIR}/home_bash_aliases_template >> ${HOME}/.bash_aliases
 }
 
 function __install_notify_telegram() {
@@ -146,11 +166,11 @@ function __install_notify_slack() {
 
 function __install_fzf() {
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install
+  ~/.fzf/install --all
 }
 
 function __update_fzf() {
-  cd ~/.fzf && git pull && ./install
+  cd ~/.fzf && git pull && ./install --all
 }
 
 ##### Actual Operations

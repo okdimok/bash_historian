@@ -73,7 +73,7 @@ function is_installed() {
 }
 
 function __register_all_bash_historian_hidden_commands () {
-  source "${HOME}/bash_historian/aux/bash_history_repo_commands.sh"
+  source "${DIR}/aux/bash_history_repo_commands.sh"
 }
 
 __register_all_bash_historian_hidden_commands
