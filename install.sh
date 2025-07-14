@@ -113,7 +113,7 @@ function __remove_bash_aliases_from_bashrc() {
   tmpfile=$(mktemp)
 
   # Replace lines that source ~/.bash_aliases with echo ""
-  sed 's/^\s*\. ~\/\.bash_aliases\s*$/echo ""/g; s/^\s*source ~\/\.bash_aliases\s*$/echo ""/g' "$bashrc" > "$tmpfile"
+  sed 's/^\s*\. ~\/\.bash_aliases\s*$/true/g; s/^\s*source ~\/\.bash_aliases\s*$/true/g' "$bashrc" > "$tmpfile"
 
   # Replace the original .bashrc
   mv "$tmpfile" "$bashrc"
