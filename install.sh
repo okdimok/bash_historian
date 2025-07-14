@@ -107,30 +107,25 @@ function __install_bash_history_repository() {
   fi
 }
 
+function __remove_bash_aliases_from_bashrc() {
+  local bashrc="${HOME}/.bashrc"
+  local tmpfile
+  tmpfile=$(mktemp)
+
+  # Replace lines that source ~/.bash_aliases with echo ""
+  sed 's/^\s*\. ~\/\.bash_aliases\s*$/echo ""/g; s/^\s*source ~\/\.bash_aliases\s*$/echo ""/g' "$bashrc" > "$tmpfile"
+
+  # Replace the original .bashrc
+  mv "$tmpfile" "$bashrc"
+}
+
 function __update_bashrc () {
+  __remove_bash_aliases_from_bashrc
   echo """if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
   fi""" >> ${HOME}/.bashrc
   sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/$/ ### commented out by Bash Historian/}' ${HOME}/.bashrc
   sed -i '/^[^#]/ {/\(HIST\|PROMPT_COMMAND\|hist\|ignoreboth\|ignoredups\|ignorespace\)/ s/^/#/}' ${HOME}/.bashrc
-}
-
-function __move_bash_aliases_to_bottom() {
-  local bashrc="${HOME}/.bashrc"
-  local tmpfile
-  tmpfile=$(mktemp)
-
-  # Remove all lines that source ~/.bash_aliases
-  grep -vE '^\s*\. ~/.bash_aliases\s*$|^\s*source ~/.bash_aliases\s*$' "$bashrc" > "$tmpfile"
-
-  # Add the source line at the end
-  echo "" >> "$tmpfile"
-  echo 'if [ -f ~/.bash_aliases ]; then' >> "$tmpfile"
-  echo '  . ~/.bash_aliases' >> "$tmpfile"
-  echo 'fi' >> "$tmpfile"
-
-  # Replace the original .bashrc
-  mv "$tmpfile" "$bashrc"
 }
 
 function __install_tmux_conf () {
