@@ -168,6 +168,18 @@ function __update_fzf() {
   cd ~/.fzf && git pull && ./install --all
 }
 
+function __install_claude_code() {
+  echo "Installing Claude Code"
+  curl -fsSL https://claude.ai/install.sh | bash
+  echo "Claude Code installed. Use 'claude' command to start the agent."
+}
+
+function __install_cursor_cli() {
+  echo "Installing Cursor CLI"
+  curl https://cursor.com/install -fsS | bash
+  echo "Cursor CLI installed. Use 'agent' command to start the agent."
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -199,9 +211,11 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_bash_history_repository # installs only if the folder doesn't exist
   __update_bashrc
   __install_tmux_conf
-  __install_notify_telegram
+  # __install_notify_telegram
   __install_fzf
   __install_notify_slack
+  __install_claude_code
+  __install_cursor_cli
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;
