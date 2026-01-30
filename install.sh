@@ -85,7 +85,7 @@ function __install_bash_history_repository() {
       __cmd="${__cmd} ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}"
       eval "${__cmd}" && BRANCH_FOUND=1
       if [[ -z $BRANCH_FOUND ]]; then
-          git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO}
+          git clone ${BASH_HISTORY_REPOSITORY} ${BASH_HISTORY_LOCAL_REPO};
           cd ${BASH_HISTORY_LOCAL_REPO}
           git checkout -b "${BASH_HISTORY_BRANCH}"
           git push -u origin "${BASH_HISTORY_BRANCH}"

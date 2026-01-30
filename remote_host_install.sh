@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 remote_instructions=`cat ${DIR}/aux/remote_install_instructions`
 
-ssh $host "git clone https://github.com/okdimok/bash_historian;"
+ssh $host "git clone https://github.com/okdimok/bash_historian || cd ~/bash_historian && git pull;"
 [[ -n $config ]] && scp ${config} $host:~/bash_historian/install_configuration
 ssh -t $host "cd ~/bash_historian; \\
 source ./install.sh; \\
