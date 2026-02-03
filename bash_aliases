@@ -13,7 +13,7 @@ if [ -f ${DIR}/bash_aliases_local_before ]; then
     . ${DIR}/bash_aliases_local_before
 fi
 
-[[ $- == *i* && -z "$NO_BH_BANNER" ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
+[[ $- == *i* && -z "$NO_BH_BANNER" && "$TERM_PROGRAM" != "vscode" ]] && echo -e "$BGreen""Bash Historian Enabled Shell""$Color_Off"
 
 ##### History #####
 # don't put duplicate lines or lines starting with space in the history.
@@ -28,7 +28,7 @@ HISTSIZE=
 HISTFILESIZE=
 HISTTIMEFORMAT="%F %T "
 # HISTFILE=${DIR}/bash_history
-HISTFILE=${HOME}/.bash_history # keeping it for now to allow public repo
+HISTFILE=${DIR}/../.bash_history # keeping it for now to allow public repo
 
 ##### Aliases #####
 
@@ -186,17 +186,18 @@ function bell() {
 
 
 ##### Environments
-PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
-PREV_PS="\[${BIPurple}\]BH \[${Color_Off}\]${PREV_PS}"
-# PREV_PS="${PS1:0: -3}"
-[[ -f ${DIR}/git-prompt.sh ]] && source ${DIR}/git-prompt.sh
-command -v __git_ps1 >/dev/null 2>&1 && export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ " ||  export PS1="${PREV_PS}""\[${Color_Off}\]\$ "
+if [[ "$TERM_PROGRAM" != "vscode" ]]; then
+    PREV_PS="${debian_chroot:+($debian_chroot)}\[${PS_USER_COLOR}\]\u\[${Color_Off}\]@\[${PS_HOST_COLOR}\]\h\[${Color_Off}\]:\[${PS_PATH_COLOR}\]\w\[${Color_Off}\]"
+    PREV_PS="\[${BIPurple}\]BH \[${Color_Off}\]${PREV_PS}"
+    # PREV_PS="${PS1:0: -3}"
+    [[ -f ${DIR}/git-prompt.sh ]] && source ${DIR}/git-prompt.sh
+    command -v __git_ps1 >/dev/null 2>&1 && export PS1="${PREV_PS}"'$(__git_ps1 "\[${BYellow}\](%s)")'"\[${Color_Off}\]\$ " ||  export PS1="${PREV_PS}""\[${Color_Off}\]\$ "
 
-PAGER=vless
-GIT_PAGER=vless
-LESS=FRX
-LESS=-Ri
-
+    PAGER=vless
+    GIT_PAGER=vless
+    LESS=FRX
+    LESS=-Ri
+fi
 export NO_AT_BRIDGE=1 # to prevent gvim warnings and other stuff
 
 if [[ ! -S "${SSH_AUTH_SOCK}" ]]; then
@@ -224,7 +225,7 @@ export PATH="${HOME}/.local/bin:$PATH"
 # export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 # export CUDA_HOME="/usr/local/cuda-8.0"
 
-export LD_LIBRARY_PATH=.:/lib:/usr/lib:/usr/local/lib
+export LD_LIBRARY_PATH=.:/lib:$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib
 
 # export J2REDIR=/usr/lib/jvm/java-8-oracle
 # export J2SDKDIR=/usr/lib/jvm/java-8-oracle
