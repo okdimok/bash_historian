@@ -4,9 +4,14 @@
 SSH_HOSTS=$(grep "Host " ~/.ssh/config | sed "s/.*Host //" | sort)
 mapfile -t hosts_array <<< "$SSH_HOSTS"
 
-echo "╔════════════════════════════════════════╗"
-echo "║      SSH Connection Manager            ║"
-echo "╚════════════════════════════════════════╝"
+clear
+
+# Source color definitions
+source "$(dirname "$0")/../bash_colors"
+
+echo -e "${Cyan}╔════════════════════════════════╗${Color_Off}"
+echo -e "${Cyan}║${Color_Off}     ${BGreen}SSH Connection Manager${Color_Off}     ${Cyan}║${Color_Off}"
+echo -e "${Cyan}╚════════════════════════════════╝${Color_Off}"
 echo
 
 # Check if fzf is available for better TUI
@@ -20,16 +25,16 @@ if command -v fzf &> /dev/null; then
         --preview-window=up:2:wrap)
 
     if [ -z "$user_host" ]; then
-        echo "No host selected. Exiting."
+        echo -e "${BYellow}No host selected. Exiting.${Color_Off}"
         exit 0
     fi
 else
     # Display available hosts in columns
-    echo "Available SSH hosts:"
-    echo "────────────────────"
+    echo -e "${Blue}Available SSH hosts:${Color_Off}"
+    echo -e "${Cyan}────────────────────${Color_Off}"
     printf '%s\n' "${hosts_array[@]}" | nl -w3 -s') ' | column -c 100
     echo
-    echo "💡 Tip: Install 'fzf' for fuzzy search: sudo apt install fzf"
+    echo -e "${BYellow}💡 Tip: Install 'fzf' for fuzzy search: ${Color_Off}sudo apt install fzf"
     echo
 
     # Set up tab completion for the read command
@@ -44,7 +49,8 @@ else
     complete -F _ssh_hosts_completion -o default read 2>/dev/null
 
     # Use read with readline editing enabled (-e flag enables tab completion)
-    read -e -p "Enter hostname (Tab for completion) or number: " user_input
+    echo -ne "${Green}Enter hostname ${Cyan}(Tab for completion)${Green} or number: ${Color_Off}"
+    read -e user_input
 
     # Remove the temporary completion
     complete -r read 2>/dev/null
@@ -55,7 +61,7 @@ else
         if [ $idx -ge 0 ] && [ $idx -lt ${#hosts_array[@]} ]; then
             user_host="${hosts_array[$idx]}"
         else
-            echo "❌ Invalid number. Exiting."
+            echo -e "${Red}❌ Invalid number. Exiting.${Color_Off}"
             exit 1
         fi
     else
@@ -63,13 +69,13 @@ else
     fi
 
     if [ -z "$user_host" ]; then
-        echo "No host provided. Exiting."
+        echo -e "${BYellow}No host provided. Exiting.${Color_Off}"
         exit 0
     fi
 fi
 
 # Connect
 echo
-echo "→ Connecting to: $user_host"
+echo -e "${Green}→ Connecting to: ${BCyan}$user_host${Color_Off}"
 title "${user_host}"
 ssh_tmux "${user_host}"
