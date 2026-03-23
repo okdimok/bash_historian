@@ -199,6 +199,21 @@ function __install_opencode() {
   echo "OpenCode installed. Use 'opencode' command to start the agent."
 }
 
+function __install_opencode_teams() {
+  echo "Installing OpenCode Teams Bridge"
+  local OPENCODE_TEAMS_DIR="${HOME}/local_code/opencode_teams"
+  if [[ -d ${OPENCODE_TEAMS_DIR} ]]; then
+    echo "opencode_teams already exists at ${OPENCODE_TEAMS_DIR}, pulling latest..."
+    cd ${OPENCODE_TEAMS_DIR} && git pull
+  else
+    mkdir -p ${HOME}/local_code
+    git clone ssh://gitlab-master/dmitrym/opencode-teams.git ${OPENCODE_TEAMS_DIR}
+  fi
+  cd ${OPENCODE_TEAMS_DIR} && npm install
+  echo "OpenCode Teams Bridge installed at ${OPENCODE_TEAMS_DIR}"
+  echo "Usage: npx tsx ${OPENCODE_TEAMS_DIR}/src/index.ts /path/to/project"
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -236,6 +251,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_claude_code
   __install_cursor_cli
   __install_opencode
+  __install_opencode_teams
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;
