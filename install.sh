@@ -192,6 +192,7 @@ function __install_opencode() {
   npm install -g opencode-ai
   mkdir -p ${HOME}/.config/opencode
   cp ${DIR}/aux/opencode.json ${HOME}/.config/opencode/opencode.json
+  cp ${DIR}/aux/opencode-teams-bot.json ${HOME}/.config/opencode-teams-bot.json
   if [[ -n $OPENCODE_NVIDIA_API_KEY ]]; then
     echo "export OPENCODE_NVIDIA_API_KEY=${OPENCODE_NVIDIA_API_KEY}" >> ${DIR}/bash_aliases_local_after
   fi
