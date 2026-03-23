@@ -1,0 +1,323 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",
+  "provider": {
+    "custom_nvidia_inference": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NVIDIA Internal Inference",
+      "options": {
+        "baseURL": "https://inference-api.nvidia.com/v1/",
+        "apiKey": "{env:OPENCODE_NVIDIA_API_KEY}"
+      },
+      "models": {
+        "aws/anthropic/bedrock-claude-opus-4-6": {
+          "name": "Claude Opus 4.6 (AWS Bedrock)"
+        },
+        "aws/anthropic/bedrock-claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (AWS Bedrock)"
+        },
+        "aws/anthropic/bedrock-claude-opus-4-1-v1": {
+          "name": "Claude Opus 4.1 (AWS Bedrock)"
+        },
+        "aws/anthropic/claude-opus-4-5": {
+          "name": "Claude Opus 4.5 (AWS)"
+        },
+        "aws/anthropic/bedrock-claude-sonnet-4-5-v1": {
+          "name": "Claude Sonnet 4.5 (AWS Bedrock)"
+        },
+        "aws/anthropic/claude-haiku-4-5-v1": {
+          "name": "Claude Haiku 4.5 (AWS)"
+        },
+        "aws/anthropic/us.anthropic.claude-sonnet-4-v1": {
+          "name": "Claude Sonnet 4 (AWS US)"
+        },
+        "aws/anthropic/bedrock-claude-3-7-sonnet-v1": {
+          "name": "Claude Sonnet 3.7 (AWS Bedrock)"
+        },
+        "aws/anthropic/bedrock-claude-3-5-haiku-v1": {
+          "name": "Claude Haiku 3.5 (AWS Bedrock)"
+        },
+        "azure/anthropic/claude-opus-4-6": {
+          "name": "Claude Opus 4.6 (Azure)"
+        },
+        "azure/anthropic/claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Azure)"
+        },
+        "azure/anthropic/claude-opus-4-5": {
+          "name": "Claude Opus 4.5 (Azure)"
+        },
+        "azure/anthropic/claude-sonnet-4-5": {
+          "name": "Claude Sonnet 4.5 (Azure)"
+        },
+        "azure/anthropic/claude-haiku-4-5": {
+          "name": "Claude Haiku 4.5 (Azure)"
+        },
+        "azure/openai/gpt-5.4": {
+          "name": "GPT-5.4 (Azure)"
+        },
+        "azure/openai/gpt-5.3-chat": {
+          "name": "GPT-5.3 Chat (Azure)"
+        },
+        "azure/openai/gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex (Azure)"
+        },
+        "azure/openai/gpt-5.2": {
+          "name": "GPT-5.2 (Azure)"
+        },
+        "azure/openai/gpt-5.2-chat": {
+          "name": "GPT-5.2 Chat (Azure)"
+        },
+        "azure/openai/gpt-5.2-codex": {
+          "name": "GPT-5.2 Codex (Azure)"
+        },
+        "azure/openai/gpt-5.1": {
+          "name": "GPT-5.1 (Azure)"
+        },
+        "azure/openai/gpt-5.1-chat": {
+          "name": "GPT-5.1 Chat (Azure)"
+        },
+        "azure/openai/gpt-5.1-codex": {
+          "name": "GPT-5.1 Codex (Azure)"
+        },
+        "azure/openai/gpt-5.1-codex-mini": {
+          "name": "GPT-5.1 Codex Mini (Azure)"
+        },
+        "azure/openai/gpt-5.1-codex-max": {
+          "name": "GPT-5.1 Codex Max (Azure)"
+        },
+        "azure/openai/gpt-5": {
+          "name": "GPT-5 (Azure)"
+        },
+        "azure/openai/gpt-5-chat": {
+          "name": "GPT-5 Chat (Azure)"
+        },
+        "azure/openai/gpt-5-mini": {
+          "name": "GPT-5 Mini (Azure)"
+        },
+        "azure/openai/gpt-5-nano": {
+          "name": "GPT-5 Nano (Azure)"
+        },
+        "azure/openai/gpt-4.1": {
+          "name": "GPT-4.1 (Azure)"
+        },
+        "azure/openai/gpt-4.1-mini": {
+          "name": "GPT-4.1 Mini (Azure)"
+        },
+        "azure/openai/gpt-4o": {
+          "name": "GPT-4o (Azure)"
+        },
+        "azure/openai/gpt-4o-mini": {
+          "name": "GPT-4o Mini (Azure)"
+        },
+        "azure/openai/gpt-4": {
+          "name": "GPT-4 (Azure)"
+        },
+        "azure/openai/o4-mini": {
+          "name": "o4-mini (Azure)"
+        },
+        "azure/openai/o3": {
+          "name": "o3 (Azure)"
+        },
+        "azure/openai/o3-mini": {
+          "name": "o3-mini (Azure)"
+        },
+        "azure/openai/o1": {
+          "name": "o1 (Azure)"
+        },
+        "us/azure/openai/gpt-5.4": {
+          "name": "GPT-5.4 (US Azure)"
+        },
+        "us/azure/openai/gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex (US Azure)"
+        },
+        "us/azure/openai/gpt-5.2": {
+          "name": "GPT-5.2 (US Azure)"
+        },
+        "us/azure/openai/gpt-5.1": {
+          "name": "GPT-5.1 (US Azure)"
+        },
+        "us/azure/openai/gpt-5": {
+          "name": "GPT-5 (US Azure)"
+        },
+        "us/azure/openai/gpt-5-mini": {
+          "name": "GPT-5 Mini (US Azure)"
+        },
+        "us/azure/openai/gpt-5-nano": {
+          "name": "GPT-5 Nano (US Azure)"
+        },
+        "us/azure/openai/gpt-4.1": {
+          "name": "GPT-4.1 (US Azure)"
+        },
+        "us/azure/openai/gpt-4.1-mini": {
+          "name": "GPT-4.1 Mini (US Azure)"
+        },
+        "us/azure/openai/gpt-4.1-nano": {
+          "name": "GPT-4.1 Nano (US Azure)"
+        },
+        "us/azure/openai/gpt-4o-mini": {
+          "name": "GPT-4o Mini (US Azure)"
+        },
+        "us/azure/openai/o4-mini": {
+          "name": "o4-mini (US Azure)"
+        },
+        "us/azure/openai/o3-mini": {
+          "name": "o3-mini (US Azure)"
+        },
+        "us/azure/openai/o1": {
+          "name": "o1 (US Azure)"
+        },
+        "openai/openai/gpt-5.4": {
+          "name": "GPT-5.4 (OpenAI)"
+        },
+        "openai/openai/gpt-5.4-pro": {
+          "name": "GPT-5.4 Pro (OpenAI)"
+        },
+        "openai/openai/gpt-5.4-mini": {
+          "name": "GPT-5.4 Mini (OpenAI)"
+        },
+        "openai/openai/gpt-5.4-nano": {
+          "name": "GPT-5.4 Nano (OpenAI)"
+        },
+        "openai/openai/gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex (OpenAI)"
+        },
+        "openai/openai/gpt-5.2-codex": {
+          "name": "GPT-5.2 Codex (OpenAI)"
+        },
+        "openai/openai/gpt-5.2": {
+          "name": "GPT-5.2 (OpenAI)"
+        },
+        "openai/openai/gpt-5.1-codex": {
+          "name": "GPT-5.1 Codex (OpenAI)"
+        },
+        "openai/openai/gpt-5.1": {
+          "name": "GPT-5.1 (OpenAI)"
+        },
+        "openai/openai/gpt-5-codex": {
+          "name": "GPT-5 Codex (OpenAI)"
+        },
+        "openai/openai/gpt-5-mini": {
+          "name": "GPT-5 Mini (OpenAI)"
+        },
+        "openai/openai/gpt-5-nano": {
+          "name": "GPT-5 Nano (OpenAI)"
+        },
+        "openai/openai/gpt-3.5-turbo": {
+          "name": "GPT-3.5 Turbo (OpenAI)"
+        },
+        "gcp/google/gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview (GCP)"
+        },
+        "gcp/google/gemini-3.1-flash-lite-preview": {
+          "name": "Gemini 3.1 Flash Lite Preview (GCP)"
+        },
+        "gcp/google/gemini-3-pro": {
+          "name": "Gemini 3 Pro (GCP)"
+        },
+        "gcp/google/gemini-3-pro-preview": {
+          "name": "Gemini 3 Pro Preview (GCP)"
+        },
+        "gcp/google/gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview (GCP)"
+        },
+        "gcp/google/gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (GCP)"
+        },
+        "gcp/google/gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (GCP)"
+        },
+        "gcp/google/gemini-2.5-flash-lite": {
+          "name": "Gemini 2.5 Flash Lite (GCP)"
+        },
+        "nvidia/nvidia/llama-3.1-nemotron-ultra-253b-v1": {
+          "name": "Nemotron Ultra 253B (NVIDIA)"
+        },
+        "nvidia/nvidia/llama-3.3-nemotron-super-49b-v1.5": {
+          "name": "Nemotron Super 49B v1.5 (NVIDIA)"
+        },
+        "nvidia/nvidia/llama-3.3-nemotron-super-49b-v1": {
+          "name": "Nemotron Super 49B v1 (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-nano-31b-v3": {
+          "name": "Nemotron Nano 31B v3 (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-nano-30b-v3": {
+          "name": "Nemotron Nano 30B v3 (NVIDIA)"
+        },
+        "nvidia/nvidia/Nemotron-3-Nano-30B-A3B": {
+          "name": "Nemotron-3 Nano 30B A3B (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-nano-12b-v2-vl": {
+          "name": "Nemotron Nano 12B v2 VL (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-nano-9b-v2": {
+          "name": "Nemotron Nano 9B v2 (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-3-super-v3": {
+          "name": "Nemotron-3 Super v3 (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-3-super-preview": {
+          "name": "Nemotron-3 Super Preview (NVIDIA)"
+        },
+        "nvidia/nvidia/nemotron-3-super-rc-nim": {
+          "name": "Nemotron-3 Super RC NIM (NVIDIA)"
+        },
+        "nvidia/meta/llama-3.3-70b-instruct": {
+          "name": "Llama 3.3 70B Instruct (NVIDIA)"
+        },
+        "nvidia/meta/llama-3.1-70b-instruct": {
+          "name": "Llama 3.1 70B Instruct (NVIDIA)"
+        },
+        "nvidia/meta/llama-3.1-8b-instruct": {
+          "name": "Llama 3.1 8B Instruct (NVIDIA)"
+        },
+        "nvidia/meta/llama-3.2-1b-instruct": {
+          "name": "Llama 3.2 1B Instruct (NVIDIA)"
+        },
+        "nvidia/openai/gpt-oss-120b": {
+          "name": "GPT OSS 120B (NVIDIA)"
+        },
+        "nvidia/openai/gpt-oss-20b": {
+          "name": "GPT OSS 20B (NVIDIA)"
+        },
+        "nvidia/qwen/qwen3-next-80b-a3b-instruct": {
+          "name": "Qwen3 Next 80B A3B Instruct (NVIDIA)"
+        },
+        "nvidia/qwen/qwen-235b": {
+          "name": "Qwen 235B (NVIDIA)"
+        },
+        "nvidia_dynamo/nvidia/nvidia-nemotron-3-nano-30b-a3b": {
+          "name": "Nemotron-3 Nano 30B A3B (Dynamo)"
+        },
+        "nvidia_dynamo/nvidia/nemotron-nano-30b-a3b-omni": {
+          "name": "Nemotron Nano 30B A3B Omni (Dynamo)"
+        },
+        "nvidia_dynamo/nvidia/nemotron-3-super-preview": {
+          "name": "Nemotron-3 Super Preview (Dynamo)"
+        },
+        "perplexity/perplexity/sonar": {
+          "name": "Sonar (Perplexity)"
+        },
+        "perplexity/perplexity/sonar-pro": {
+          "name": "Sonar Pro (Perplexity)"
+        },
+        "perplexity/perplexity/sonar-reasoning-pro": {
+          "name": "Sonar Reasoning Pro (Perplexity)"
+        },
+        "perplexity/perplexity/sonar-deep-research": {
+          "name": "Sonar Deep Research (Perplexity)"
+        }
+      }
+    }
+  },
+  "enabled_providers": ["custom_nvidia_inference"],
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git *": "allow",
+      "npm *": "allow",
+      "grep *": "allow",
+      "rm *": "deny"
+    }
+  }
+}
