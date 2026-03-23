@@ -180,6 +180,24 @@ function __install_cursor_cli() {
   echo "Cursor CLI installed. Use 'agent' command to start the agent."
 }
 
+function __install_opencode() {
+  echo "Installing OpenCode"
+  if ! command -v npm &> /dev/null; then
+    echo "npm not found, installing Node.js via nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install --lts
+  fi
+  npm install -g opencode-ai
+  mkdir -p ${HOME}/.config/opencode
+  cp ${DIR}/aux/opencode.json ${HOME}/.config/opencode/opencode.json
+  if [[ -n $OPENCODE_NVIDIA_API_KEY ]]; then
+    echo "export OPENCODE_NVIDIA_API_KEY=${OPENCODE_NVIDIA_API_KEY}" >> ${DIR}/bash_aliases_local_after
+  fi
+  echo "OpenCode installed. Use 'opencode' command to start the agent."
+}
+
 ##### Actual Operations
 __bak_file ${HOME}/.bashrc
 __bak_file ${HOME}/.bash_aliases
@@ -216,6 +234,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_notify_slack
   __install_claude_code
   __install_cursor_cli
+  __install_opencode
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";
 fi;
