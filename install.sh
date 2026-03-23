@@ -199,6 +199,19 @@ function __install_opencode() {
   echo "OpenCode installed. Use 'opencode' command to start the agent."
 }
 
+function __install_ssh_config() {
+  echo "Installing SSH config for gitlab-master"
+  mkdir -p ${HOME}/.ssh
+  chmod 700 ${HOME}/.ssh
+  if [[ -f ${HOME}/.ssh/config ]] && grep -q "gitlab-master" ${HOME}/.ssh/config; then
+    echo "gitlab-master entry already exists in SSH config, skipping."
+  else
+    echo "" >> ${HOME}/.ssh/config
+    cat ${DIR}/aux/ssh_config_gitlab_master >> ${HOME}/.ssh/config
+    echo "gitlab-master SSH config added."
+  fi
+}
+
 function __install_opencode_teams() {
   echo "Installing OpenCode Teams Bridge"
   local OPENCODE_TEAMS_DIR="${HOME}/local_code/opencode_teams"
@@ -251,6 +264,7 @@ if [[ -z $AVOID_COMPLETE_BH_INSTALL ]]; then
   __install_claude_code
   __install_cursor_cli
   __install_opencode
+  __install_ssh_config
   __install_opencode_teams
 else
   echo "Avoided complete install. You can run any part of the installation separetely, but do not forget to update config file";

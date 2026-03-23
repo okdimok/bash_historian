@@ -1,0 +1,6 @@
+Host gitlab-master gitlab-master.nvidia.com
+  User git
+  Port 12051
+  CanonicalizeHostname yes
+  CanonicalDomains nvidia.com
+  PreferredAuthentications publickey

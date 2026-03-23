@@ -7,3 +7,5 @@ install_configuration
 install_configuration_*
 ssh_key
 ssh_key.pub
+.opencode-teams-id
+config.json
