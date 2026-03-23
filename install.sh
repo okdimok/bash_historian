@@ -225,6 +225,9 @@ function __install_opencode_teams() {
   cd ${OPENCODE_TEAMS_DIR} && npm install
   echo "OpenCode Teams Bridge installed at ${OPENCODE_TEAMS_DIR}"
   echo "Usage: npx tsx ${OPENCODE_TEAMS_DIR}/src/index.ts /path/to/project"
+  echo "Installing teams-cli..."
+  curl -fsSL https://outlook-cli-80d21a.gitlab-master-pages.nvidia.com/install.sh | bash
+  echo "Run 'outlook-cli auth login' to authenticate."
 }
 
 ##### Actual Operations
