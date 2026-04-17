@@ -1,7 +1,17 @@
 #!/bin/bash -i
 
-# Get SSH hosts from config
-SSH_HOSTS=$(grep "Host " ~/.ssh/config | sed "s/.*Host //" | sort)
+# Get SSH hosts from config and all included config files
+_ssh_config_files=("$HOME/.ssh/config")
+while IFS= read -r inc_path; do
+    # Expand ~ to $HOME
+    inc_path="${inc_path/#\~/$HOME}"
+    # Expand globs
+    for f in $inc_path; do
+        [ -f "$f" ] && _ssh_config_files+=("$f")
+    done
+done < <(grep -i '^Include ' "$HOME/.ssh/config" 2>/dev/null | sed 's/^Include[[:space:]]*//' | sed 's/^"//' | sed 's/"$//')
+
+SSH_HOSTS=$(grep -h "^Host " "${_ssh_config_files[@]}" 2>/dev/null | sed "s/^Host //" | tr ' ' '\n' | grep -v '[*?]' | sort -u)
 mapfile -t hosts_array <<< "$SSH_HOSTS"
 
 clear
